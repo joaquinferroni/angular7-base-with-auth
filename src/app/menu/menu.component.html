@@ -1,0 +1,46 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport="true"
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="!(isHandset$ | async)">
+    <mat-toolbar class="menu-header"><img src="assets/images/general/apex-america.png"></mat-toolbar>
+    <mat-nav-list class="menu">
+      <a *ngFor="let m of menuLateral; let i = index" [ngClass]="{'activo': i === menuIndex}"
+        (click)="setMenuActive(i, m)">
+        <i class="material-icons" *ngIf="!m.Men_Icono.includes('assets/icons')">{{m.Men_Icono}}</i>
+        <div class="menu-icon-apex" *ngIf="m.Men_Icono.includes('assets/icons') && i !== menuIndex"><img
+            src="{{m.Men_Icono}}.png"></div>
+        <div class="menu-icon-apex" *ngIf="m.Men_Icono.includes('assets/icons') && i === menuIndex"><img
+            src="{{m.Men_Icono}}_active.png"></div>
+        <br />
+        <p>{{m.Men_Nombre}}</p>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar class="mat-toolbar-header">
+      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon class="menu-toggle" aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span *ngIf="isHandset$ | async" class="menu-title"><img src="assets/images/general/apex-america.png"></span>
+      <span class="align-right"></span>
+      <div class="menu-hijos" [ngClass]="{'menu-hijos-active': i === menuIndexHijo }"
+        *ngFor="let mh of menuHijos; let i = index">
+        <label (click)="navigateToMenu(mh); menuIndexHijo = i;">{{mh.Men_Nombre}}</label>
+      </div>
+      <!-- <button mat-button [matMenuTriggerFor]="menuMsj"><img src="assets/icons/alerta.png"></button> -->
+      <button class="menu-user" *ngIf="!(isHandset$ | async)" mat-button [matMenuTriggerFor]="menu"><img
+          [src]="urlImages + usu_Imagen" onerror="this.src='assets/images/general/default-user.png'"></button>
+    </mat-toolbar>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+<mat-menu #menu="matMenu">
+  <div class="menu-user-option" (click)="AbmUser()">MI PERFIL</div>
+  <div class="menu-user-option-last" (click)="logout()">SALIR</div>
+</mat-menu>
+<mat-menu #menuMsj="matMenu">
+  <div class="menu-user-option">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</div>
+  <div class="menu-user-option">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</div>
+  <div class="menu-user-option-last">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</div>
+</mat-menu>
